@@ -1,15 +1,19 @@
 import { MapPin, Phone, Clock } from "lucide-react";
+import { useSiteData } from "@/store/siteData";
 
 const MapSection = () => {
+  const { contact } = useSiteData();
+  const { hours } = useSiteData();
+
   return (
     <section id="location" className="py-24 bg-background">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Kde nás <span className="text-primary">nájdete</span>
+            Kde nás <span className="text-primary">najdete</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Navštívte nás osobne alebo nás kontaktujte
+            Navštivte nás osobně anebo nás kontaktujte
           </p>
         </div>
 
@@ -34,7 +38,7 @@ const MapSection = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground mb-1">Adresa</h3>
-                <p className="text-muted-foreground text-sm">Hlavná 123, 811 01 Bratislava</p>
+                <p className="text-muted-foreground text-sm">{contact.address}</p>
               </div>
             </div>
 
@@ -43,8 +47,8 @@ const MapSection = () => {
                 <Phone className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-1">Telefón</h3>
-                <p className="text-muted-foreground text-sm">+421 900 123 456</p>
+                <h3 className="font-semibold text-foreground mb-1">Telefon</h3>
+                <p className="text-muted-foreground text-sm">{contact.phone}</p>
               </div>
             </div>
 
@@ -53,10 +57,10 @@ const MapSection = () => {
                 <Clock className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-1">Otváracie hodiny</h3>
-                <p className="text-muted-foreground text-sm">Po – Pi: 8:00 – 17:00</p>
-                <p className="text-muted-foreground text-sm">So: 8:00 – 12:00</p>
-                <p className="text-muted-foreground text-sm">Ne: Zatvorené</p>
+                <h3 className="font-semibold text-foreground mb-1">Otevírací hodiny</h3>
+                <p className="text-muted-foreground text-sm">Po – Pá: {hours.weekdays}</p>
+                <p className="text-muted-foreground text-sm">So: {hours.saturday}</p>
+                <p className="text-muted-foreground text-sm">Ne: {hours.sunday}</p>
               </div>
             </div>
           </div>

@@ -58,7 +58,7 @@ const Navbar = () => {
           className="flex items-center gap-2 text-primary-foreground font-bold text-xl tracking-tight transition-transform duration-300 hover:scale-105"
         >
           <Wrench className="h-6 w-6 text-accent" />
-          <span>AutoServis</span>
+          <span>AutoServis Joura</span>
         </a>
 
         {/* Desktop */}

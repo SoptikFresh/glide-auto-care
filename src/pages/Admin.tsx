@@ -34,7 +34,7 @@ const Admin = () => {
     setServices(editServices);
     setContact(editContact);
     setHours(editHours);
-    toast.success("Zmeny boli uložené!");
+    toast.success("Změny byli uložené!");
   };
 
   return (
@@ -47,7 +47,7 @@ const Admin = () => {
           <h1 className="text-xl font-bold">Admin Panel</h1>
         </div>
         <Button onClick={saveAll} className="gap-2">
-          <Save className="h-4 w-4" /> Uložiť všetko
+          <Save className="h-4 w-4" /> Uložit vše
         </Button>
       </header>
 
@@ -57,14 +57,14 @@ const Admin = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-foreground">Služby</h2>
             <Button variant="outline" onClick={addService} className="gap-2">
-              <Plus className="h-4 w-4" /> Pridať
+              <Plus className="h-4 w-4" /> Přidat
             </Button>
           </div>
           <div className="space-y-4">
             {editServices.map((s) => (
               <div key={s.id} className="bg-card border border-border rounded-xl p-5 grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
                 <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">Názov</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">Název</label>
                   <Input value={s.name} onChange={(e) => updateService(s.id, "name", e.target.value)} />
                 </div>
                 <div className="md:col-span-2">
@@ -91,7 +91,7 @@ const Admin = () => {
 
         {/* Contact */}
         <section>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Kontaktné údaje</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">Kontaktní údaje</h2>
           <div className="bg-card border border-border rounded-xl p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Telefón</label>
@@ -110,10 +110,10 @@ const Admin = () => {
 
         {/* Opening hours */}
         <section>
-          <h2 className="text-2xl font-bold text-foreground mb-6">Otváracie hodiny</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6">Otevírací hodiny</h2>
           <div className="bg-card border border-border rounded-xl p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Po – Pi</label>
+              <label className="text-xs text-muted-foreground mb-1 block">Po – Pá</label>
               <Input value={editHours.weekdays} onChange={(e) => setEditHours({ ...editHours, weekdays: e.target.value })} />
             </div>
             <div>
@@ -121,7 +121,7 @@ const Admin = () => {
               <Input value={editHours.saturday} onChange={(e) => setEditHours({ ...editHours, saturday: e.target.value })} />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground mb-1 block">Nedeľa</label>
+              <label className="text-xs text-muted-foreground mb-1 block">Neděle</label>
               <Input value={editHours.sunday} onChange={(e) => setEditHours({ ...editHours, sunday: e.target.value })} />
             </div>
           </div>

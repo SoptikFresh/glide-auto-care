@@ -1,10 +1,11 @@
 import { ChevronRight, Clock, Shield, ThumbsUp, Users } from "lucide-react";
 
+
 const highlights = [
   { icon: Shield, text: "Certifikovaný servis" },
-  { icon: Clock, text: "Rýchle termíny" },
-  { icon: ThumbsUp, text: "Garancia kvality" },
-  { icon: Users, text: "15+ rokov skúseností" },
+  { icon: Clock, text: "Rychle termíny" },
+  { icon: ThumbsUp, text: "Garance kvality" },
+  { icon: Users, text: "15+ rokov zkušeností" },
 ];
 
 const HeroSection = () => {
@@ -19,11 +20,11 @@ const HeroSection = () => {
 
       <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-extrabold text-primary-foreground mb-6 animate-fade-in-up">
-          Váš spoľahlivý{" "}
-          <span className="text-accent">AutoServis</span>
+          Váš spolehlivý{" "}
+          <span className="text-accent">AutoServis Joura</span>
         </h1>
         <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-          Kompletná starostlivosť o vaše vozidlo na jednom mieste. Kvalita, rýchlosť a férovosť.
+          Kompletné starostlivost o vaše vozidlo na jednom místě. Kvalita, rychlost a férovost.
         </p>
 
         {/* Highlights grid */}

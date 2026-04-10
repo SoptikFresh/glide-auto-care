@@ -15,15 +15,15 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Wrench className="h-6 w-6 text-accent" />
-              <span className="font-bold text-xl">AutoServis</span>
+              <span className="font-bold text-xl">AutoServis Joura</span>
             </div>
             <p className="text-primary-foreground/60 text-sm leading-relaxed">
-              Profesionálny autoservis s dlhoročnými skúsenosťami. Staráme sa o vaše vozidlo ako o vlastné.
+              Profesionální autoservis s dlouholetými zkušenostmi. Staráme se o vaše vozidlo jako o vlastní.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Navigácia</h3>
+            <h3 className="font-semibold text-lg mb-4">Navigace</h3>
             <ul className="space-y-2">
               {[
                 { label: "Úvod", href: "#intro" },
@@ -65,7 +65,7 @@ const Footer = () => {
 
       <div className="border-t border-primary-foreground/10 py-6">
         <p className="text-center text-primary-foreground/40 text-sm">
-          © {new Date().getFullYear()} AutoServis. Všetky práva vyhradené.
+          © {new Date().getFullYear()} AutoServis Joura. Všechna práva vyhrazena.
         </p>
       </div>
     </footer>

@@ -38,7 +38,7 @@ const ServicesSection = () => {
             Naše <span className="text-primary">služby</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Ponúkame široký rozsah služieb pre všetky typy vozidiel
+            Nabízíme široký rozsah služeb pro všechny typy vozidel
           </p>
         </div>
 
@@ -47,7 +47,7 @@ const ServicesSection = () => {
             <table className="w-full">
               <thead>
                 <tr className="bg-primary text-primary-foreground">
-                  <th className="text-left px-6 py-4 font-semibold">Služba</th>
+                  <th className="text-left px-6 py-4 font-semibold">Služby</th>
                   <th className="text-left px-6 py-4 font-semibold">Popis</th>
                   <th className="text-left px-6 py-4 font-semibold">Cena</th>
                   <th className="text-left px-6 py-4 font-semibold">Čas</th>
