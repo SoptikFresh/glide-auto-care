@@ -211,10 +211,7 @@ const Admin = () => {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm">{user.email}</span>
-          <Button onClick={() => debugFirestoreData()} variant="outline" size="sm">
-            Debug DB
-          </Button>
-          <Button onClick={handleLogout} variant="outline" size="sm" className="gap-2">
+          <Button onClick={handleLogout}  size="sm" className="gap-2">
             <LogOut className="h-4 w-4" /> Odhlásit
           </Button>
           <Button onClick={saveAll} className="gap-2">
