@@ -3,9 +3,9 @@ import { ChevronRight, Clock, Shield, ThumbsUp, Users } from "lucide-react";
 
 const highlights = [
   { icon: Shield, text: "Certifikovaný servis" },
-  { icon: Clock, text: "Rychle termíny" },
+  { icon: Clock, text: "Rychlé termíny" },
   { icon: ThumbsUp, text: "Garance kvality" },
-  { icon: Users, text: "15+ rokov zkušeností" },
+  { icon: Users, text: "15+ let zkušeností" },
 ];
 
 const HeroSection = () => {

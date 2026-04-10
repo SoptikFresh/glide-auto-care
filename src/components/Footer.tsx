@@ -2,11 +2,24 @@ import { Wrench, Mail, Phone, MapPin } from "lucide-react";
 import { useSiteData } from "@/store/siteData";
 
 const Footer = () => {
-  const { contact } = useSiteData();
+  const { contact, loading } = useSiteData();
 
   const handleClick = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
+
+  if (loading) {
+    return (
+      <footer id="contact" className="bg-foreground text-primary-foreground">
+        <div className="container mx-auto px-6 py-16">
+          <div className="animate-pulse">
+            <div className="h-6 bg-gray-700 rounded w-48 mb-4"></div>
+            <div className="h-4 bg-gray-700 rounded w-64"></div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
   return (
     <footer id="contact" className="bg-foreground text-primary-foreground">

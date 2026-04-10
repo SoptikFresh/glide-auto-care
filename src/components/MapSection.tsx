@@ -2,8 +2,30 @@ import { MapPin, Phone, Clock } from "lucide-react";
 import { useSiteData } from "@/store/siteData";
 
 const MapSection = () => {
-  const { contact } = useSiteData();
-  const { hours } = useSiteData();
+  const { contact, hours, loading } = useSiteData();
+
+  if (loading) {
+    return (
+      <section id="location" className="py-24 bg-background">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="animate-pulse">
+              <div className="h-8 bg-gray-300 rounded w-64 mx-auto mb-4"></div>
+              <div className="h-4 bg-gray-300 rounded w-96 mx-auto"></div>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-10">
+            <div className="animate-pulse h-96 bg-gray-300 rounded-2xl"></div>
+            <div className="space-y-5">
+              <div className="animate-pulse h-24 bg-gray-300 rounded-xl"></div>
+              <div className="animate-pulse h-24 bg-gray-300 rounded-xl"></div>
+              <div className="animate-pulse h-24 bg-gray-300 rounded-xl"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="location" className="py-24 bg-background">

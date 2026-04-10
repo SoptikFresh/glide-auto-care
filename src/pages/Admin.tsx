@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSiteData, Service } from "@/store/siteData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Plus, Trash2, Save } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Save, LogIn, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { auth, ADMIN_UID, saveContactToFirestore, saveOpeningHoursToFirestore, saveServicesToFirestore, loadContactFromFirestore, loadOpeningHoursFromFirestore, loadServicesFromFirestore, debugFirestoreData } from "@/firebase";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
 
 const Admin = () => {
   const { services, contact, hours, setServices, setContact, setHours } = useSiteData();
@@ -12,6 +14,81 @@ const Admin = () => {
   const [editServices, setEditServices] = useState<Service[]>(services);
   const [editContact, setEditContact] = useState(contact);
   const [editHours, setEditHours] = useState(hours);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (user && user.uid === ADMIN_UID) {
+      loadDataFromFirestore();
+    }
+  }, [user]);
+
+  const loadDataFromFirestore = async () => {
+    try {
+      const contactData = await loadContactFromFirestore();
+      if (contactData) {
+        setEditContact({
+          phone: contactData.Telefon,
+          email: contactData.Email,
+          address: contactData.Adresa,
+        });
+      }
+
+      const hoursData = await loadOpeningHoursFromFirestore();
+      if (hoursData) {
+        setEditHours({
+          weekdays: hoursData.Weekdays,
+          saturday: hoursData.Saturday,
+          sunday: hoursData.Sunday,
+        });
+      }
+
+      const servicesData = await loadServicesFromFirestore();
+      if (servicesData) {
+        setEditServices(servicesData.map((s: { Cena: string; Název: string; Popis: string; Čas: string }, index: number) => ({
+          id: (index + 1).toString(),
+          icon: "Wrench",
+          name: s.Název,
+          description: s.Popis,
+          price: s.Cena,
+          time: s.Čas,
+        })));
+      }
+    } catch (error) {
+      console.error("Error loading data from Firestore:", error);
+      toast.error("Chyba při načítání dat");
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      toast.success("Přihlášení úspěšné");
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Chyba při přihlášení");
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Odhlášení úspěšné");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Chyba při odhlášení");
+    }
+  };
 
   const updateService = (id: string, field: keyof Service, value: string) => {
     setEditServices((prev) =>
@@ -30,12 +107,98 @@ const Admin = () => {
     setEditServices((prev) => prev.filter((s) => s.id !== id));
   };
 
-  const saveAll = () => {
-    setServices(editServices);
-    setContact(editContact);
-    setHours(editHours);
-    toast.success("Změny byli uložené!");
+  const saveAll = async () => {
+    if (!user || user.uid !== ADMIN_UID) {
+      toast.error("Nejste oprávněni ukládat změny");
+      return;
+    }
+
+    try {
+      console.log("Saving contact:", {
+        Adresa: editContact.address,
+        Email: editContact.email,
+        Telefon: editContact.phone,
+      });
+      await saveContactToFirestore({
+        Adresa: editContact.address,
+        Email: editContact.email,
+        Telefon: editContact.phone,
+      });
+
+      console.log("Saving hours:", {
+        Weekdays: editHours.weekdays,
+        Saturday: editHours.saturday,
+        Sunday: editHours.sunday,
+      });
+      await saveOpeningHoursToFirestore({
+        Weekdays: editHours.weekdays,
+        Saturday: editHours.saturday,
+        Sunday: editHours.sunday,
+      });
+
+      const servicesToSave = editServices.map(s => ({
+        Cena: s.price,
+        Název: s.name,
+        Popis: s.description,
+        Čas: s.time,
+      }));
+      console.log("Saving services:", servicesToSave);
+      await saveServicesToFirestore(servicesToSave);
+
+      setServices(editServices);
+      setContact(editContact);
+      setHours(editHours);
+      toast.success("Změny byli uložené do databáze!");
+    } catch (error) {
+      console.error("Error saving to Firestore:", error);
+      toast.error("Chyba při ukládání do databáze");
+    }
   };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Načítání...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="bg-card border border-border rounded-xl p-8 max-w-md w-full">
+          <h1 className="text-2xl font-bold text-center mb-6">Admin Přihlášení</h1>
+          <div className="space-y-4">
+            <Input
+              type="email"
+              placeholder="Email"
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Heslo"
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+            <Button onClick={handleLogin} className="w-full gap-2">
+              <LogIn className="h-4 w-4" /> Přihlásit se
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (user.uid !== ADMIN_UID) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="bg-card border border-border rounded-xl p-8 max-w-md w-full text-center">
+          <h1 className="text-2xl font-bold mb-4">Přístup odepřen</h1>
+          <p className="text-muted-foreground mb-6">Nemáte oprávnění k přístupu do admin panelu.</p>
+          <Button onClick={handleLogout} variant="outline" className="gap-2">
+            <LogOut className="h-4 w-4" /> Odhlásit se
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -46,9 +209,18 @@ const Admin = () => {
           </Link>
           <h1 className="text-xl font-bold">Admin Panel</h1>
         </div>
-        <Button onClick={saveAll} className="gap-2">
-          <Save className="h-4 w-4" /> Uložit vše
-        </Button>
+        <div className="flex items-center gap-4">
+          <span className="text-sm">{user.email}</span>
+          <Button onClick={() => debugFirestoreData()} variant="outline" size="sm">
+            Debug DB
+          </Button>
+          <Button onClick={handleLogout} variant="outline" size="sm" className="gap-2">
+            <LogOut className="h-4 w-4" /> Odhlásit
+          </Button>
+          <Button onClick={saveAll} className="gap-2">
+            <Save className="h-4 w-4" /> Uložit vše
+          </Button>
+        </div>
       </header>
 
       <div className="container mx-auto px-6 py-10 space-y-12 max-w-4xl">
