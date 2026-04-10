@@ -8,20 +8,16 @@ import {
   Zap,
   ShieldCheck,
   Car,
+  LucideIcon,
 } from "lucide-react";
+import { useSiteData } from "@/store/siteData";
 
-const services = [
-  { icon: Gauge, name: "Diagnostika", description: "Kompletná počítačová diagnostika", price: "od 30 €", time: "30 min" },
-  { icon: Droplets, name: "Výmena oleja", description: "Olej + filter + kontrola", price: "od 45 €", time: "45 min" },
-  { icon: Wrench, name: "Oprava bŕzd", description: "Výmena doštičiek a kotúčov", price: "od 80 €", time: "1-2 hod" },
-  { icon: CircleDot, name: "Pneuservis", description: "Prezutie, vyváženie, oprava", price: "od 25 €", time: "30 min" },
-  { icon: Car, name: "Geometria", description: "Nastavenie geometrie kolies", price: "od 40 €", time: "45 min" },
-  { icon: Wind, name: "Klimatizácia", description: "Plnenie a čistenie klímy", price: "od 50 €", time: "1 hod" },
-  { icon: Zap, name: "Elektrika", description: "Diagnostika a oprava elektriky", price: "od 35 €", time: "1-3 hod" },
-  { icon: ShieldCheck, name: "Príprava STK", description: "Kontrola a príprava na STK/EK", price: "od 60 €", time: "1-2 hod" },
-];
+const iconMap: Record<string, LucideIcon> = {
+  Gauge, Droplets, Wrench, CircleDot, Car, Wind, Zap, ShieldCheck,
+};
 
 const ServicesSection = () => {
+  const { services } = useSiteData();
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -46,7 +42,6 @@ const ServicesSection = () => {
           </p>
         </div>
 
-        {/* Table for md+, cards for mobile */}
         <div className="hidden md:block">
           <div className="bg-card rounded-2xl shadow-lg overflow-hidden border border-border">
             <table className="w-full">
@@ -60,10 +55,10 @@ const ServicesSection = () => {
               </thead>
               <tbody>
                 {services.map((s, i) => {
-                  const Icon = s.icon;
+                  const Icon = iconMap[s.icon] || Wrench;
                   return (
                     <tr
-                      key={s.name}
+                      key={s.id}
                       className={`border-b border-border last:border-0 transition-all duration-500 hover:bg-accent/10 ${
                         visible ? "animate-fade-in-up" : "opacity-0"
                       }`}
@@ -88,13 +83,12 @@ const ServicesSection = () => {
           </div>
         </div>
 
-        {/* Mobile cards */}
         <div className="md:hidden grid gap-4">
           {services.map((s, i) => {
-            const Icon = s.icon;
+            const Icon = iconMap[s.icon] || Wrench;
             return (
               <div
-                key={s.name}
+                key={s.id}
                 className={`bg-card rounded-xl p-5 shadow-md border border-border transition-all duration-500 ${
                   visible ? "animate-fade-in-up" : "opacity-0"
                 }`}

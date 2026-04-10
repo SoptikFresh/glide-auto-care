@@ -1,6 +1,9 @@
 import { Wrench, Mail, Phone, MapPin } from "lucide-react";
+import { useSiteData } from "@/store/siteData";
 
 const Footer = () => {
+  const { contact } = useSiteData();
+
   const handleClick = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -9,7 +12,6 @@ const Footer = () => {
     <footer id="contact" className="bg-foreground text-primary-foreground">
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-3 gap-12">
-          {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Wrench className="h-6 w-6 text-accent" />
@@ -20,13 +22,13 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Navigation */}
           <div>
             <h3 className="font-semibold text-lg mb-4">Navigácia</h3>
             <ul className="space-y-2">
               {[
                 { label: "Úvod", href: "#intro" },
                 { label: "Služby", href: "#services" },
+                { label: "Kde nás nájdete", href: "#location" },
                 { label: "Kontakt", href: "#contact" },
               ].map((item) => (
                 <li key={item.href}>
@@ -41,28 +43,26 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h3 className="font-semibold text-lg mb-4">Kontakt</h3>
             <ul className="space-y-3 text-sm text-primary-foreground/60">
               <li className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-accent" />
-                +421 900 123 456
+                {contact.phone}
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-accent" />
-                info@autoservis.sk
+                {contact.email}
               </li>
               <li className="flex items-center gap-3">
                 <MapPin className="h-4 w-4 text-accent" />
-                Hlavná 123, Bratislava
+                {contact.address}
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Copyright */}
       <div className="border-t border-primary-foreground/10 py-6">
         <p className="text-center text-primary-foreground/40 text-sm">
           © {new Date().getFullYear()} AutoServis. Všetky práva vyhradené.
