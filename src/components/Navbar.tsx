@@ -4,6 +4,7 @@ import { Menu, X, Wrench } from "lucide-react";
 const navItems = [
   { label: "Úvod", href: "#intro" },
   { label: "Služby", href: "#services" },
+  { label: "Kde nás nájdete", href: "#location" },
   { label: "Kontakt", href: "#contact" },
 ];
 
